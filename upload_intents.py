@@ -71,5 +71,5 @@ def parse_file(filename):
 
 
 if __name__ == '__main__':
-    parse_file('questions.json')
-    # list_intents(project_id)
+    # parse_file('questions.json')
+    list_intents(project_id)
