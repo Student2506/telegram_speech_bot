@@ -5,12 +5,14 @@ from telegram.ext import Updater, CallbackContext, CommandHandler
 from telegram.ext import MessageHandler, Filters
 from dotenv import load_dotenv
 from google.cloud import dialogflow
+from google.cloud import storage
 
 load_dotenv()
 
+storage_client = storage.Client()
 
 tg_token = os.environ['TG_TOKEN']
-project_id = os.environ.get('PROJECT_ID')
+project_id = storage_client.project
 
 
 updater = Updater(
@@ -33,7 +35,10 @@ def start(update: Update, context: CallbackContext):
 
 def echo(update: Update, context: CallbackContext):
     response = detect_intent_texts(
-        project_id=project_id, session_id=update.effective_chat.id, text=update.message.text)
+        project_id=project_id,
+        session_id=update.effective_chat.id,
+        text=update.message.text
+    )
     context.bot.send_message(
         chat_id=update.effective_chat.id, text=response
     )
