@@ -8,14 +8,6 @@ from google.cloud import dialogflow, storage
 from vk_api.longpoll import VkEventType, VkLongPoll
 
 load_dotenv()
-storage_client = storage.Client()
-project_id = storage_client.project
-
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
 
 
 def echo(event, vk_api):
@@ -36,7 +28,7 @@ def detect_intent_texts(project_id, session_id, text, language_code='ru'):
     session_client = dialogflow.SessionsClient()
 
     session = session_client.session_path(project_id, session_id)
-    print(f'Session path: {session}\n')
+    logging.debug(f'Session path: {session}\n')
 
     text_input = dialogflow.TextInput(
         text=text, language_code=language_code
@@ -47,19 +39,27 @@ def detect_intent_texts(project_id, session_id, text, language_code='ru'):
         request={'session': session, 'query_input': query_input}
     )
 
-    print('=' * 20)
-    print(f'Query text: {response.query_result.query_text}')
-    print(
+    logging.debug('=' * 20)
+    logging.debug(f'Query text: {response.query_result.query_text}')
+    logging.debug(
         f'Detected intent: {response.query_result.intent.display_name} '
         f'(confidence {response.query_result.intent_detection_confidence})'
     )
-    print(f'Fullfillment text: {response.query_result.fulfillment_text}')
+    logging.debug(
+        f'Fullfillment text: {response.query_result.fulfillment_text}'
+    )
     if response.query_result.intent.is_fallback:
         return None
     return response.query_result.fulfillment_text
 
 
 if __name__ == '__main__':
+    logging.basicConfig(
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        level=logging.DEBUG
+    )
+    storage_client = storage.Client()
+    project_id = storage_client.project
     vk_session = vk.VkApi(token=os.getenv('VK_TOKEN'))
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
