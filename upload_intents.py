@@ -71,4 +71,5 @@ def parse_file(filename):
 
 
 if __name__ == '__main__':
+    # TODO: get file from argparse
     parse_file('questions.json')
