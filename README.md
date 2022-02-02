@@ -28,5 +28,5 @@
 5. Запустить бота  
 > python main.py или python main_vk.py  
 
-[Пример телеграм бота](t.me/Student83_DVMN_bot)
-[Пример бота ВКонтакте](https://vk.com/public210459096)
+[Пример телеграм бота](t.me/Student83_DVMN_bot)  
+[Пример бота ВКонтакте](https://vk.com/public210459096)  
