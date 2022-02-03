@@ -8,7 +8,7 @@ from telegram import Bot, Update
 from telegram.ext import CallbackContext, CommandHandler, Filters
 from telegram.ext import MessageHandler, Updater
 
-from google_dialogflow_api.py import detect_intent_texts
+from google_dialogflow_api import detect_intent_texts
 from logging_to_telegram import TelegramLogsHandler
 
 logger = logging.getLogger(__file__)

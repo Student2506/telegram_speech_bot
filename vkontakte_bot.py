@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from google.cloud import storage
 from vk_api.longpoll import VkEventType, VkLongPoll
 
-from google_dialogflow_api.py import detect_intent_texts
+from google_dialogflow_api import detect_intent_texts
 from logging_to_telegram import TelegramLogsHandler
 
 logger = logging.getLogger(__file__)
