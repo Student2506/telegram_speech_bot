@@ -1,2 +1,2 @@
-bot-tg: python3 main.py
-bot-vk: python3 main_vk.py
+bot-tg: python3 telegram_bot.py
+bot-vk: python3 vkontakte_bot.py

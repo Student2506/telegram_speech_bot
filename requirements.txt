@@ -4,3 +4,4 @@ python-telegram-bot==13.10
 vk-api==11.9.7
 google-cloud-dialogflow==2.11.0
 google-cloud-storage==2.1.0
+configargparse==1.5.3

@@ -1,19 +1,20 @@
 import json
+import logging
+
+import configargparse
 from dotenv import load_dotenv
-from google.cloud import dialogflow
-from google.cloud import storage
+from google.cloud import dialogflow, storage
 
+FORMAT = '%(levelname)s:%(funcName)s:%(message)s'
 
-load_dotenv()
-
-storage_client = storage.Client()
-project_id = storage_client.project
+logging.basicConfig(level=logging.DEBUG, format=FORMAT)
+log = logging.getLogger(__name__)
 
 
 def create_intent(
     project_id, display_name, training_phrases_parts, message_texts
 ):
-    print(project_id)
+    log.debug(f'{project_id}')
     intents_client = dialogflow.IntentsClient()
     parent = dialogflow.AgentsClient.agent_path(project_id)
     training_phrases = []
@@ -36,32 +37,18 @@ def create_intent(
         request={'parent': parent, 'intent': intent}
     )
 
-    print(f'Intent created: {response}')
+    log.debug(f'Intent created: {response}')
 
 
-def list_intents(project_id):
-    intents_client = dialogflow.IntentsClient()
-    parent = dialogflow.AgentsClient.agent_path(project_id)
-    intents = intents_client.list_intents(request={'parent': parent})
-
-    for intent in intents:
-        print('=' * 20)
-        print(
-            f'Intent name: {intent.name}\nIntent display_name: '
-            f'{intent.display_name}\nAction: {intent.action}\nRoot followup '
-            f'intent: {intent.root_followup_intent_name}\n'
-            f'Parent followup intent: {intent.parent_followup_intent_name}\n'
-            f'Input contexts:'
-        )
-        for input_context_name in intent.input_context_names:
-            print(f'\tName: {input_context_name}\n')
-
-        print('Output contexts:\n')
-        for output_context in intent.output_contexts:
-            print(f'\tName: {output_context.name}')
-
-
-def parse_file(filename):
+def main():
+    configs = configargparse.ArgParser()
+    configs.add(
+        '-i', '--filename', default='questions.json', help='file to import'
+    )
+    filename = configs.parse_args().filename
+    load_dotenv()
+    storage_client = storage.Client()
+    project_id = storage_client.project
     with open(filename, mode='r', encoding='utf-8') as f:
         file_content = json.load(f)
     for name in file_content:
@@ -71,5 +58,4 @@ def parse_file(filename):
 
 
 if __name__ == '__main__':
-    # TODO: get file from argparse
-    parse_file('questions.json')
+    main()
