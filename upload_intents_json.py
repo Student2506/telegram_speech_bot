@@ -5,9 +5,8 @@ import configargparse
 from dotenv import load_dotenv
 from google.cloud import dialogflow, storage
 
-FORMAT = '%(levelname)s:%(funcName)s:%(message)s'
+FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
-logging.basicConfig(level=logging.DEBUG, format=FORMAT)
 log = logging.getLogger(__name__)
 
 
@@ -41,6 +40,7 @@ def create_intent(
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG, format=FORMAT)
     configs = configargparse.ArgParser()
     configs.add(
         '-i', '--filename', default='questions.json', help='file to import'
